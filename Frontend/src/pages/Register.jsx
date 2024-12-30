@@ -9,7 +9,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [role, setRole] = useState('False');
     const { login } = useContext(AuthContext);
-    const navigate = useNavigate();
+const navigate = useNavigate();
     const [error, setError] = useState('');
     const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -38,9 +38,12 @@ const Register = () => {
     };
 
     // Automatically populates the login form with demo credentials
-    const handleDemoClick = () => {
+    const handleDemoAdminClick = () => {
         navigate('/login', { state: { username: 'rohit_nain', password: '123456789' } });
     };
+    const handleDemoUserClick = () => {
+        navigate('/login', { state: { username: 'rohit_nain_user', password: '123456789' } });
+    }
 
     return (
         <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
@@ -136,12 +139,22 @@ const Register = () => {
                         <br></br>
                         <button
                             type="submit"
-                            onClick={handleDemoClick}
+                            onClick={handleDemoAdminClick}
                             className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
                                 isDarkMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-indigo-500 hover:bg-indigo-600'
                             } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
                         >
-                            Auto Login For Demo User
+                            Auto Login For Demo admin
+                        </button>
+                        <br></br>
+                        <button
+                            type="submit"
+                            onClick={handleDemoUserClick}
+                            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+                                isDarkMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-indigo-500 hover:bg-indigo-600'
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                        >
+                        Auto Login For Demo User
                         </button>
                     </div>
                 </form>
