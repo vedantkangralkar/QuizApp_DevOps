@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import quizService from '../services/quizService';
 import QuizCard from '../components/QuizCard';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Button } from "../components/ui/button"
-import { AuthContext } from '../context/AuthContext';
+// import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -14,7 +14,7 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const quizzesPerPage = 12;
     const navigate = useNavigate(); // Initialize useNavigate
-    const { user } = useContext(AuthContext);
+    // const { user } = useContext(AuthContext);
 
     // Loads quizzes on component mount and checks for authorization
     useEffect(() => {
@@ -40,8 +40,9 @@ const Home = () => {
         setIsDarkMode(!isDarkMode);
     };
 
-    const navigateToAdmin = () => {
-        navigate('/admin');
+    const navigateToRegister = () => {
+        navigate('/register');
+        localStorage.removeItem('token');
     };
 
     // Filters quizzes by search term
@@ -68,9 +69,7 @@ const Home = () => {
                                 isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
                             }`}
                         />
-                        {/* {user && (user.role === 'True' || user.role === true) && ( */}
-                            {/* <Button onClick={navigateToAdmin}>Admin Dashboard</Button> */}
-                        {/* )} */}
+                            <Button onClick={navigateToRegister}>Sign out</Button>
                         <button
                             onClick={toggleTheme}
                             className={`px-4 py-2 rounded-md ${
