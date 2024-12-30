@@ -43,7 +43,7 @@ router.get('/', auth, admin, async (req, res) => {
             const score = correctAnswers;
 
             // Skip results with empty values
-            if (!result.user || !result.user.username || !totalQuestions || !attemptedQuestions || !correctAnswers || !score) {
+            if (!result.user || !result.user.username || !totalQuestions || !attemptedQuestions ) {
                 return null;
             }
 
