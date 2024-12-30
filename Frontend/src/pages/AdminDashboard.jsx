@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import quizService from '../services/quizService' // Import the actual quizService
 // import AlertDialogDelete from "../components/AlertDialog"
 import AdminDialog from "../components/AdminDialog";
+import { useNavigate } from 'react-router-dom';
 
 export const AdminDashboard = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -25,8 +26,10 @@ export const AdminDashboard = () => {
     const [resultsPage, setResultsPage] = useState({});
     const [currentQuizPage, setCurrentQuizPage] = useState(1);
     const quizzesPerPage = 10;
-    const [activeTab, setActiveTab] = useState("create")
-
+    const [activeTab, setActiveTab] = useState("create");
+    
+    const navigate = useNavigate();
+    
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
@@ -44,6 +47,14 @@ export const AdminDashboard = () => {
         setQuizTimer(e.target.value);
     };
 
+    const navigateToQuizz = () => {
+        navigate('/');
+    };
+
+    const navigateToRegister = () => {
+        navigate('/register');
+        localStorage.removeItem('token');
+    };
     // Creates a new quiz using form data (title, description, questions, etc.)
     const handleCreateQuiz = async () => {
         const timerValue = quizTimer === '' ? 0 : parseInt(quizTimer, 10);
@@ -164,12 +175,16 @@ export const AdminDashboard = () => {
     const currentQuizzes = filteredQuizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
 
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <div className="min-h-screen bg-background text-foreground">
                 <header className="border-b">
                     <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                        <div className="flex items-center space-x-4">
+                        <Button onClick={navigateToQuizz}>All Quizzes</Button>
+                        <Button onClick={navigateToRegister}>Sign out</Button>
                         <ThemeToggle />
+                        </div>
                     </div>
                 </header>
                 <main className="container mx-auto px-4 py-8">
