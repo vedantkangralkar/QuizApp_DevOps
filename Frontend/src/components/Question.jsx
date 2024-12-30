@@ -1,7 +1,9 @@
 const Question = ({ question, onAnswerSelect, isDarkMode }) => {
+    if (!question) return null; // Ensure question is defined
+    console.log(question);
     return (
         <div className={`mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            <h3 className="text-xl font-semibold mb-4">{question.text}</h3>
+            <h3 className="text-xl font-semibold mb-4">{question.question}</h3> 
             <div className="space-y-2">
                 {question.options.map((option, index) => (
                     // Clicking an option triggers 'onAnswerSelect(index)' to handle answer logic
