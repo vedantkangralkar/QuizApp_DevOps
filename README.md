@@ -5,7 +5,9 @@
 ![Screenshot (1592)](https://github.com/user-attachments/assets/6cec6911-c1c7-4856-b086-6d8bb884993a)
 ![Screenshot (1593)](https://github.com/user-attachments/assets/b6bf065a-f557-4746-83d8-eac10c8af009)
 ![Screenshot (1596)](https://github.com/user-attachments/assets/9233a89b-be11-49c7-98bd-d99dad936c6a)
-
+![Screenshot (1600)](https://github.com/user-attachments/assets/16f58367-f4cb-4572-afa4-365a1d8d51f2)
+![Screenshot (1601)](https://github.com/user-attachments/assets/493fee50-b0ca-43c8-87ab-b1396816a8a1)
+![Screenshot (1599)](https://github.com/user-attachments/assets/225c8ab9-d813-448d-b464-69021b6e5e07)
 
 
 Quiz-WebApp-with-Admin-Panel is a comprehensive online quiz web application built using the MERN stack (MongoDB, Express.js, React, and Node.js). It features a user-friendly interface for quiz participants and a powerful admin panel for managing quizzes and tracking user performance.
@@ -29,6 +31,7 @@ Quiz-WebApp-with-Admin-Panel is a comprehensive online quiz web application buil
 - **Deployment:** [Specify your deployment platform, e.g., Heroku, Vercel]
 
 ## Installation
+0. **Fork The repository to your Github:**
 
 1. **Clone the repository:**
     ```bash
