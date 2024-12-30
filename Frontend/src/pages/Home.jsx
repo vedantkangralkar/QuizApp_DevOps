@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import quizService from '../services/quizService';
 import QuizCard from '../components/QuizCard';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Button } from "../components/ui/button"
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -10,7 +11,10 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const quizzesPerPage = 12;
     const navigate = useNavigate(); // Initialize useNavigate
+    const { user } = useContext(AuthContext);
 
     // Loads quizzes on component mount and checks for authorization
     useEffect(() => {
@@ -23,7 +27,7 @@ const Home = () => {
             } catch (error) {
                 setError('Failed to fetch quizzes. Please try again later.');
                 setIsLoading(false);
-                if (error.msg=='No token, authorization denied') {
+                if (error.msg === 'No token, authorization denied') {
                     navigate('/register'); // Redirect to sign-up page if unauthorized
                 }
             }
@@ -35,14 +39,19 @@ const Home = () => {
     const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
     };
+
     const navigateToAdmin = () => {
         navigate('/admin');
-    }
+    };
 
     // Filters quizzes by search term
     const filteredQuizzes = quizzes.filter((quiz) =>
         quiz.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const indexOfLastQuiz = currentPage * quizzesPerPage;
+    const indexOfFirstQuiz = indexOfLastQuiz - quizzesPerPage;
+    const currentQuizzes = filteredQuizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
 
     return (
         <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
@@ -59,7 +68,9 @@ const Home = () => {
                                 isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
                             }`}
                         />
-                        <Button onClick={navigateToAdmin} >Admin DashBoard</Button>
+                        {/* {user && (user.role === 'True' || user.role === true) && ( */}
+                            {/* <Button onClick={navigateToAdmin}>Admin Dashboard</Button> */}
+                        {/* )} */}
                         <button
                             onClick={toggleTheme}
                             className={`px-4 py-2 rounded-md ${
@@ -80,17 +91,36 @@ const Home = () => {
                         <p className="text-red-500">{error}</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {Array.isArray(filteredQuizzes) && filteredQuizzes.length > 0 ? (
-                            filteredQuizzes.map((quiz) => (
-                                <QuizCard key={quiz._id} quiz={quiz} isDarkMode={isDarkMode} />
-                            ))
-                        ) : (
-                            <div className="col-span-full text-center py-8">
-                                <p>No quizzes found.</p>
-                            </div>
-                        )}
-                    </div>
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {Array.isArray(currentQuizzes) && currentQuizzes.length > 0 ? (
+                                currentQuizzes.map((quiz) => (
+                                    <QuizCard key={quiz._id} quiz={quiz} isDarkMode={isDarkMode} />
+                                ))
+                            ) : (
+                                <div className="col-span-full text-center py-8">
+                                    <p>No quizzes found.</p>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex justify-between items-center w-full mt-4">
+                            <Button
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                disabled={currentPage === 1}
+                            >
+                                Previous
+                            </Button>
+                            <span>
+                                Page {currentPage} of {Math.ceil(filteredQuizzes.length / quizzesPerPage)}
+                            </span>
+                            <Button
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredQuizzes.length / quizzesPerPage)))}
+                                disabled={currentPage === Math.ceil(filteredQuizzes.length / quizzesPerPage)}
+                            >
+                                Next
+                            </Button>
+                        </div>
+                    </>
                 )}
             </div>
         </div>

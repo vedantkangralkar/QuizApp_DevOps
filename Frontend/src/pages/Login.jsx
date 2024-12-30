@@ -31,7 +31,12 @@ const Auth = () => {
             if (isLogin) {
                 const data = await authService.login({ username, password });
                 login(data.token);
+                if(data.role==="True"){
+                    navigate('/admin');
+                }
+                if(data.role==="False"){
                 navigate('/');
+                }
             } else {
                 await authService.register({ username, email, password });
                 setIsLogin(true);
