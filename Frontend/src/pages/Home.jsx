@@ -12,6 +12,7 @@ const Home = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu toggle
     const quizzesPerPage = 12;
     const navigate = useNavigate(); // Initialize useNavigate
     // const { user } = useContext(AuthContext);
@@ -56,30 +57,50 @@ const Home = () => {
 
     return (
         <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-3xl font-bold">Available Quizzes</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold sm:mr-0 mr-4">Available Quizzes</h2>
                     <div className="flex items-center space-x-4">
                         <input
                             type="text"
                             placeholder="Search quizzes..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className={`px-3 py-2 rounded-md ${
+                            className={`px-3 py-2 rounded-md w-32 sm:w-64 ${
                                 isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
                             }`}
                         />
-                            <Button onClick={navigateToRegister}>Sign out</Button>
+                        <Button onClick={navigateToRegister} className="hidden sm:flex sm:justify-center sm:text-base">Sign out</Button>
                         <button
                             onClick={toggleTheme}
-                            className={`px-4 py-2 rounded-md ${
+                            className={`hidden sm:block px-4 py-2 rounded-md text-base ${
                                 isDarkMode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-800 text-white'
                             }`}
                         >
                             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
                         </button>
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="sm:hidden px-4 py-2 rounded-md bg-gray-800 text-white"
+                        >
+                            Menu
+                        </button>
                     </div>
                 </div>
+
+                {isMenuOpen && (
+                    <div className="flex w-full flex-row sm:hidden mb-4 gap-2">
+                        <Button className="w-1/2 h-12" onClick={navigateToRegister}>Sign out</Button>
+                        <button
+                            className={`w-1/2 h-12 px-4 py-2 rounded-md ${
+                                isDarkMode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-800 text-white'
+                            }`}
+                            onClick={toggleTheme}
+                        >
+                            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                        </button>
+                    </div>
+                )}
 
                 {isLoading ? (
                     <div className="flex justify-center items-center h-64">
