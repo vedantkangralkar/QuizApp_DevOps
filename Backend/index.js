@@ -6,6 +6,14 @@ require('dotenv').config(); // Load environment variables from .env file
 const app = express(); // Create an instance of express
 
 connectDB(); // Connect to the database
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// For all other routes, serve index.html (React SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
+
 
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Enable parsing JSON request bodies
