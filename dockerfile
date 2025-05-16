@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install root-level dependencies (concurrently)
+# Install root dependencies (concurrently)
 COPY package*.json ./
 RUN npm install
 
@@ -20,5 +20,5 @@ COPY . .
 # Expose frontend and backend ports
 EXPOSE 3000 5000
 
-# Start both frontend and backend
-CMD ["npx", "concurrently", "cd backend && npm start", "cd frontend && npm run dev"]
+# Start both frontend and backend in dev mode
+CMD ["npm", "run", "dev"]
