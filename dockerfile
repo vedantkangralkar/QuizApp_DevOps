@@ -1,26 +1,24 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Backend dependencies
+# Install root-level dependencies (concurrently)
+COPY package*.json ./
+RUN npm install
+
+# Install backend dependencies
 COPY backend/package*.json ./backend/
 RUN cd backend && npm install
 
-# Frontend dependencies
+# Install frontend dependencies
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm install
 
 # Copy all source code
-COPY backend ./backend
-COPY frontend ./frontend
+COPY . .
 
-# Install concurrently globally to run both apps together
-RUN npm install -g concurrently
+# Expose frontend and backend ports
+EXPOSE 3000 5000
 
-# Expose both ports
-EXPOSE 5000 3000
-
-# Start backend and frontend simultaneously
-CMD ["concurrently", \
-     "npm --prefix backend start", \
-     "npm --prefix frontend run dev"]
+# Start both frontend and backend
+CMD ["npx", "concurrently", "cd backend && npm start", "cd frontend && npm run dev"]
