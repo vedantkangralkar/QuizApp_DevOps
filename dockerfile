@@ -2,24 +2,25 @@ FROM node:18
 
 WORKDIR /app
 
-# Install backend dependencies
+# Backend dependencies
 COPY backend/package*.json ./backend/
 RUN cd backend && npm install
 
-# Install frontend dependencies
+# Frontend dependencies
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm install
 
-# Copy rest of backend and frontend code
+# Copy all source code
 COPY backend ./backend
 COPY frontend ./frontend
 
-# Build frontend for production (npm run build)
-RUN cd frontend && npm run build
+# Install concurrently globally to run both apps together
+RUN npm install -g concurrently
 
-EXPOSE 5000
+# Expose both ports
+EXPOSE 5000 3000
 
-ENV NODE_ENV=production
-
-# Start backend (which should serve frontend build)
-CMD ["npm", "start", "--prefix", "backend"]
+# Start backend and frontend simultaneously
+CMD ["concurrently", \
+     "npm --prefix backend start", \
+     "npm --prefix frontend run dev"]
